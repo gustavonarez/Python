@@ -26,7 +26,7 @@ columns_to_read = ['Item', 'Order Date', 'Receiving Date']  # Specify the column
 dtypes = {'Item': str}
 
 #Get Cumulative LT dataframe and fill NaN with 0
-filecsv = "spend_report_2022_and_forward.csv" #Add link
+filecsv = "spend_report_2022_and_forward.csv" #Add path
 
 dfSR = pd.read_csv(filecsv, usecols=columns_to_read, header=0, encoding='ANSI', #removed , nrows=34000
                    low_memory=False, dtype=dtypes, index_col='Item')
@@ -61,4 +61,4 @@ dfSRAve.columns = ['Item', 'Average Delta Business Days']
 #print(dfSRAve.loc[dfSRAve['Item'] == '54800'])
 
 print(dfSRAve)
-dfSRAve.to_csv("dfSR_Export.csv", index=True) #Add link
+dfSRAve.to_csv("dfSR_Export.csv", index=True) #Add path

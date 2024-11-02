@@ -8,7 +8,7 @@ import os
 
 #wait x seconds
 time.sleep(2)
-subprocess.Popen('Net Extender Link')
+subprocess.Popen('Net Extender') #Add path
 #wait x seconds
 time.sleep(2)
 #Press enter key
@@ -18,28 +18,28 @@ keyboard.press(Key.enter)
 keyboard.release(Key.enter)
 #wait x seconds
 time.sleep(20)
-subprocess.Popen('Outlook Link')
+subprocess.Popen('Outlook') #Add path
 #Open program x 4
-subprocess.Popen('Edge link')
+subprocess.Popen('Edge') #Add path
 time.sleep(2)
 
-   # subprocess.Popen('Teams link')
-    #subprocess.Popen('Oracle link')
+   # subprocess.Popen('Teams') #Add path
+    #subprocess.Popen('Oracle') #Add path
 
 #Open inventory program'
 
-list_of_files = glob.glob('R:\Inventory\Program\*') # * means all if need specific format then *.csv
+list_of_files = glob.glob('Program\*') # * means all if need specific format then *.csv #Add path
 #print(list_of_files)
 latest_file = max(list_of_files, key=os.path.getctime)
 file = (latest_file)
 os.startfile(file)
 
-file = "Followup items.xlsx link"
+file = "Followup items.xlsx" #Add path
 os.startfile(file)
 
-#file = "Gantts.xlsx link"
+#file = "Gantts.xlsx" #Add path
 #os.startfile(file)
 
-file = "Orders contacts.xlsx link"
+file = "Orders contacts.xlsx" #Add path
 os.startfile(file)
   

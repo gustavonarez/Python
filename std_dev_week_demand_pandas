@@ -1,0 +1,54 @@
+import pandas as pd
+import numpy
+
+#Gustavo Narez @ GNarez@weberpackaging.com 2023/2024
+#Code to calculate Safety Stock based on variability of demand
+#Formula: Safety Stock = Z x [√(PC/T1)] x σD
+#Service level and Z-score. Currently using 95% desired service level which is a 1.65 Z-score. But will use different service level for ABC items
+
+#Option to display all columns or rows
+pd.set_option('display.max_columns', None)
+#pd.set_option('display.max_rows', None)
+
+#Define the data types for columns. 'Item' for Cumulative LT dataframe dfLT
+dtypes = {'Organization Id': str, 'Item': str, 'Period Start Date': str, 'Item': str, 'Cumulative Lead Time': float}
+
+#Get Cumulative LT dataframe and fill NaN with 0
+filecsv = "Org_Item_Cumulative_Total_LT.csv" #Add path
+dfLT = pd.read_csv(filecsv, header=0, nrows=500000, encoding='ANSI', low_memory=True, dtype=dtypes,index_col='Item')
+dfLT.fillna(0, inplace=True)
+
+filecsv = "Annual_Demand - weekly buckets for std deviation.csv" #Add path
+df = pd.read_csv(filecsv, header=1, nrows=500000, encoding='ANSI', low_memory=True, dtype=dtypes)
+
+#Get the unique values of 'Period Start Date' column
+unique_dates = df['Period Start Date'].unique()
+unique_items = df['Item'].unique()
+Sales_Order_Demand = df['Sales Order Demand']
+Total_Demand_SUM = df['Total Demand SUM']
+
+df2 = df.pivot(index='Item', columns='Period Start Date', values='Sales Order Demand')
+#Fillna to replace NaN with 0, NaN happens when there is no demand for an item in a certain date.
+df2.fillna(0, inplace=True)
+df3 = df.pivot(index='Item', columns='Period Start Date', values='Total Demand SUM')
+df3.fillna(0, inplace=True)
+#print(df3)
+
+#dfSD = Data Frame Standard Deviation. Works perfectly, standard deviation value is correct, including all the 0 from the replaced NaNs
+#SDSOD = Standard Deviation Sales Order Demand. SDTD = Standard Deviation Total Demand
+dfSS = pd.DataFrame({'SDSOD': df2.std(axis=1, ddof=1), 'SDTD': df3.std(axis=1, ddof=1)})
+#print (dfSD)
+
+#Merging dataframe with demand and lead time using "Item" as key
+dfSS = pd.merge(dfSS, dfLT['Cumulative Total Lead Time'], on='Item', how='left')
+
+#Adding columns SSSOD(Safety Stock Sales Order Demand) and SSTD(Safety Stock Total Demand). Correct calculation, already verified.
+dfSS['SSSOD'] = 1.65 * (numpy.sqrt(dfSS['Cumulative Total Lead Time']/7)) * dfSS['SDSOD']
+dfSS['SSTD'] = 1.65 * (numpy.sqrt(dfSS['Cumulative Total Lead Time']/7)) * dfSS['SDTD']
+
+dfSS['SSSOD'] = dfSS['SSSOD'].round(decimals=0)
+dfSS['SSTD'] = dfSS['SSTD'].round(decimals=0)
+
+print(dfSS)
+
+dfSS.to_csv("dfSS_Export.csv", index=True) #Add path

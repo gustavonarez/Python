@@ -1,34 +1,34 @@
 #Simple script to open folders, files, programs, to start updating the inventory program
 
 import os
-path = "Inventory Program Access link"
+path = "Inventory Program Access" #Add path
 path = os.path.realpath(path)
 os.startfile(path)
 
-path = "\Inventory\Program link"
+path = "\Inventory\Program" #Add path
 path = os.path.realpath(path)
 os.startfile(path)
 
-path = "Inventory Program Monthly link"
+path = "Inventory Program Monthly" #Add path
 path = os.path.realpath(path)
 os.startfile(path)
 
 
-#path = "Documents link"
+#path = "Documents" #Add path
 #path = os.path.realpath(path)
 #os.startfile(path)
 
-file = "Inventory Program.accdb link"
+file = "Inventory Program.accdb" #Add path
 os.startfile(file)
 
-file = "Item_Supply_and_Demand.xlsx link"
+file = "Item_Supply_and_Demand.xlsx" #Add path
 os.startfile(file)
 
-file = "Org_Item_Attributes.xlsm link"
+file = "Org_Item_Attributes.xlsm" #Add path
 os.startfile(file)
 
 #Delete tbl_Inventory_Program file
-if os.path.exists("tbl_Inventory_Program.xlsx link"):
-  os.remove("tbl_Inventory_Program.xlsx link")
+if os.path.exists("tbl_Inventory_Program.xlsx"): #Add path
+  os.remove("tbl_Inventory_Program.xlsx") #Add path
 else:
   print("The file does not exist")
